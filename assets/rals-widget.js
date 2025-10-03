@@ -12,7 +12,7 @@
     document.head.appendChild(l);
   }
 
-  // Format price in 万円 (man yen) format like uchiike
+  // Format price in 万 format with comma-separated remainder
   function formatPrice(price) {
     if (!price) return '価格未定';
 
@@ -22,8 +22,9 @@
     if (remainder === 0) {
       return `${man}万円`;
     } else {
-      const decimal = remainder / 10000;
-      return `${man + decimal}万円`;
+      // Format remainder with commas
+      const formattedRemainder = remainder.toLocaleString('ja-JP');
+      return `${man}万${formattedRemainder}円`;
     }
   }
 
