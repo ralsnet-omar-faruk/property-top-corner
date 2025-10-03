@@ -170,7 +170,7 @@
           ${imageHtml}
         </div>
         <div class="property-info">
-          <div class="property-rent">賃料: ${price}</div>
+          <div class="property-rent">${price}</div>
           <div class="property-details">
             ${traffic ? `${traffic}<br>` : ''}
             ${address}<br>
