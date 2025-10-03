@@ -97,18 +97,20 @@
   }
 
   function createCard(item, detailBaseUrl) {
+    const title = item.buildingName;
     const price = formatPrice(item.propertyPrice);
     const detailUrl = `${detailBaseUrl}${item.buildingMasterId}`;
     const address = getAddress(item);
     const traffic = getTrafficInfo(item);
     const area = formatArea(item.exclusiveSize);
 
+    // デフォルトの画像として「画像なし」のプレースホルダーを設定
     let thumbnailUrl = 'https://ralsnet.example.formatline.com/app/plugins/wp-rengodb/assets/img/noimg.png';
     const supplierId = item.supplierId || 2000;
     const buildingId = item.buildingId;
     const propertyId = item.propertyId;
 
-    // Enhanced image selection logic (same as before)
+    // 優先度1: 物件データで指定された「建物」の代表画像 (`delegateImgBuilding`) を使用
     if (item.delegateImgBuilding && item.delegateImgBuilding > 0) {
       const imageNumber = item.delegateImgBuilding;
       if (imageNumber === 1) {
@@ -117,7 +119,9 @@
         const adjustedNumber = imageNumber - 1;
         thumbnailUrl = `${IMAGE_BASE_URL}${supplierId}/c-${supplierId}-${buildingId}-${adjustedNumber}.jpg`;
       }
-    } else if (item.delegateImg && item.delegateImg > 0) {
+    }
+    // 優先度2: 「建物」の代表画像がない場合、「部屋」の代表画像 (`delegateImg`) を使用
+    else if (item.delegateImg && item.delegateImg > 0) {
       const imageNumber = item.delegateImg;
       const adjustedNumber = Math.max(1, imageNumber - 1);
       const propertyImage = item.propertyImages?.find(img => img.number === imageNumber);
@@ -130,7 +134,10 @@
       } else {
         thumbnailUrl = `${IMAGE_BASE_URL}${supplierId}/r-${supplierId}-${propertyId}-${adjustedNumber}.jpg`;
       }
-    } else {
+    }
+    // 優先度3: 代表画像が全くない場合、利用可能な全画像 (`images`) のリストから探す
+
+    else {
       if (item.images && item.images.length > 0) {
         const selectedImage = item.images.find(img => img.category === 'exterior') || item.images[0];
         if (selectedImage) {
@@ -158,11 +165,8 @@
       }
     }
 
-    const imageHtml = thumbnailUrl ?
-      `<img src="${thumbnailUrl}" alt="物件画像" class="property-img"
-           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-       <div class="rals-alt-text" style="display:none;">物件画像</div>` :
-      `<div class="rals-alt-text">物件画像</div>`;
+    const imageHtml = `<img src="${thumbnailUrl}" alt="${title}" class="property-img"
+                            onerror="this.onerror=null; this.src='https://ralsnet.example.formatline.com/app/plugins/wp-rengodb/assets/img/noimg.png';">`;
 
     return `
       <div class="property-card">
@@ -224,16 +228,21 @@
         container.style.setProperty('--rals-card-bg', customCardBg);
       }
 
-      container.innerHTML = '<p>Loading properties...</p>';
+      container.innerHTML = '<p>物件を読み込み中...</p>';
       fetch(url)
         .then(response => {
-          if (!response.ok) throw new Error('Network response was not ok');
+          if (!response.ok) 
+            {
+            // 開発者向けに、HTTPステータスコードを含んだエラーを投げる
+            throw new Error(`APIエラー: ステータス ${response.status} が返されました。`);
+        }
+
           return response.json();
         })
         .then(data => render(container, data, detailBaseUrl))
         .catch(error => {
-          console.error('Error:', error);
-          container.innerHTML = '<p>Error loading properties. Please try again later.</p>';
+          console.error('物件情報の読み込みに失敗しました:', error);
+        container.innerHTML = '<p>物件情報の読み込みに失敗しました。しばらくしてから再度お試しください。</p>';
         });
     });
   }
