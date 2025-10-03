@@ -1,0 +1,181 @@
+/* Rals Widget CSS - Fixed button positioning and containment */
+
+.rals-widget-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.properties-grid {
+  display: block;
+}
+
+.property-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.property-card {
+  background: var(--rals-card-bg, white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.property-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.property-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.property-card:hover .property-img {
+  transform: scale(1.05);
+}
+
+.rals-alt-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.property-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.property-rent {
+  font-size: 1.1rem;
+  font-weight: bold;
+  /* color: #e74c3c; */
+  color: var(--rals-main-color, #e74c3c);
+  margin-bottom: 0.5rem;
+}
+
+.property-details {
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.property-address {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.property-detail-btn {
+  display: block;
+  /* background: #FF6B35; */
+  background: var(--rals-main-color, #FF6B35);
+  color: white;
+  text-decoration: none;
+  padding: 0.7rem 1rem;
+  border-radius: 40px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  margin-top: auto;
+}
+
+.property-detail-btn:hover {
+  /* background: #e55a2b; */
+  background: var(--rals-hover-color, #e55a2b); 
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .property-cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .rals-widget-container {
+    padding: 0 1rem;
+  }
+
+  .property-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .property-image {
+    height: 150px;
+  }
+
+  .property-info {
+    padding: 0.8rem;
+  }
+
+  .property-rent {
+    font-size: 1rem;
+  }
+
+  .property-address {
+    font-size: 0.8rem;
+  }
+
+  .property-detail-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .property-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .property-image {
+    height: 120px;
+  }
+
+  .property-info {
+    padding: 0.7rem;
+  }
+
+  .property-rent {
+    font-size: 0.9rem;
+  }
+
+  .property-address {
+    font-size: 0.8rem;
+  }
+
+  .property-detail-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
