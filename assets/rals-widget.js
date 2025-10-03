@@ -7,7 +7,7 @@
     if (document.querySelector('link[data-rals="css"]')) return;
     const l = document.createElement('link');
     l.rel = 'stylesheet';
-    l.href = './rals-widget.css';
+    l.href = 'https://ralsnet-omar-faruk.github.io/property-top-corner/assets/rals-widget.css';
     l.setAttribute('data-rals', 'css');
     document.head.appendChild(l);
   }
